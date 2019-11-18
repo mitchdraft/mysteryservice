@@ -75,6 +75,10 @@ type Mystery struct {
 }
 
 var InitialMysteries = []Mystery{{
+	Guest:  "red",
+	Room:   "trash room",
+	Object: "container repo",
+}, {
 	Guest:  "a",
 	Room:   "b",
 	Object: "c",

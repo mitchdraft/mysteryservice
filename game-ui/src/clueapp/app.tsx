@@ -79,6 +79,7 @@ export const ClueApp = (props: ClueAppProps) => {
         <PositionController floorPlan={fp} />
       </LhsLayout>
       <RenderFloorPlan floorPlan={fp} />
+      <RiskyStuff />
     </MainLayout>
   );
 };
@@ -279,4 +280,20 @@ const RenderFloorPlan = (props: RenderFloorPlanProps) => {
       </FloorGrid>
     </React.Fragment>
   );
+};
+
+const RiskyStuff = () => {
+  const criticalErrorMessage = useSelector(
+    (state: AppState) => state.logs.criticalErrorMessage
+  );
+  if (criticalErrorMessage !== "") {
+    return (
+      <div className="criticalError">
+        <p>tap tap tap...</p>
+        <p>page for the infrastructure team:</p>
+        <p>{criticalErrorMessage}</p>
+      </div>
+    );
+  }
+  return null;
 };

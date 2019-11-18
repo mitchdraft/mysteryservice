@@ -135,3 +135,16 @@
   white: white;
   /* border: solid 1px black; */
 }
+
+.criticalError {
+  background: red;
+  color: white;
+  margin: 2em;
+  border: 2em;
+  outline: solid black 3px;
+  font-size: x-large;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  text-align: left;
+}

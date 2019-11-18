@@ -12,10 +12,16 @@ export function request<Request, Response>(
       const data = JSON.parse(this.response) as Response;
       callback && callback(data);
     } else {
+      console.log(500);
+      if (errorCallback) {
+        // const data = JSON.parse(this.response) as Response;
+        errorCallback(this.responseText);
+      }
     }
   };
 
   request.onerror = function(err) {
+    console.log("in on err");
     errorCallback && errorCallback(err);
   };
   if (method === "POST") {

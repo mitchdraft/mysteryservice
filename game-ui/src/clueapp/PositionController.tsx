@@ -14,7 +14,7 @@ import {
   exchangeItemInRoom,
   rotateSuspect
 } from "store/clue/actions";
-import { writeLog } from "store/log/actions";
+import { writeLog, setCriticalError } from "store/log/actions";
 import { Guess } from "store/clue/types";
 import {
   RoomId,
@@ -140,6 +140,11 @@ export const PositionController = (props: PositionControllerProps) => {
           message: resp.Msg,
           level: LogLevel.error
         });
+      },
+      resp => {
+        console.log("error here");
+        console.log(resp);
+        setCriticalError(dispatch, resp);
       }
     );
   };

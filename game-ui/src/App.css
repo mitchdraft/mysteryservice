@@ -136,7 +136,7 @@
 }
 
 .criticalError {
-  background: red;
+  background: #ff0000d9;
   color: white;
   margin: 2em;
   border: 2em;
@@ -146,4 +146,6 @@
   left: 10px;
   top: 10px;
   text-align: left;
+  height: 80%;
+  width: 80%;
 }

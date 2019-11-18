@@ -9,7 +9,15 @@ export interface TopState {
   objectSuspects: string[];
 }
 
-const baseGuestSuspects = ["red", "blue", "purple"];
+const baseGuestSuspects = [
+  "red",
+  "blue",
+  "violet",
+  "white",
+  "orange",
+  "pink",
+  "green"
+];
 const baseRoomSuspects = [
   "entryway",
   "library",

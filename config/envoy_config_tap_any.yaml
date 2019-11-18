@@ -1,8 +1,3 @@
-admin:
-  access_log_path: /tmp/admin_access.log
-  profile_path: /tmp/envoy.prof
-  address:
-    socket_address: { address: 127.0.0.1, port_value: 9999 }
 static_resources:
   listeners:
     - name: listener_0
@@ -19,6 +14,14 @@ static_resources:
                   virtual_hosts:
                     - name: mystery-game
                       domains: ["*"]
+                      cors:
+                        allow_origin:
+                          - "*"
+                        allow_methods: "POST"
+                        filter_enabled:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
                       routes:
                         - match: { prefix: "/" }
                           route: { cluster: mystery-game-server }
@@ -28,19 +31,7 @@ static_resources:
                       common_config:
                         static_config:
                           match_config:
-                            ## basic config: capture everything
                             any_match: true
-                            ## example of more complex matching rules
-                            # and_match:
-                            #   rules:
-                            #     - http_request_headers_match:
-                            #         headers:
-                            #           - name: foo
-                            #             exact_match: bar
-                            #     - http_response_headers_match:
-                            #         headers:
-                            #           - name: bar
-                            #             exact_match: baz
                           output_config:
                             sinks:
                               - file_per_tap:
@@ -48,6 +39,8 @@ static_resources:
                                   ## if desired, the body can be stored as a string - only recommended if you are sure the content will be a string
                                   ## otherwise, content is base64 encoded
                                  # format: JSON_BODY_AS_STRING
+                  - name: envoy.cors
+                    typed_config: {}
                   - name: envoy.router
   clusters:
     - name: mystery-game-server

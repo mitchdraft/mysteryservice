@@ -1,0 +1,57 @@
+admin:
+  access_log_path: /tmp/admin_access.log
+  profile_path: /tmp/envoy.prof
+  address:
+    socket_address: { address: 127.0.0.1, port_value: 9999 }
+static_resources:
+  listeners:
+    - name: listener_0
+      address:
+        socket_address: { address: 0.0.0.0, port_value: 9911 }
+      filter_chains:
+        - filters:
+            - name: envoy.http_connection_manager
+              config:
+                codec_type: auto
+                stat_prefix: ingress_http
+                route_config:
+                  name: mystery-game
+                  virtual_hosts:
+                    - name: mystery-game
+                      domains: ["*"]
+                      routes:
+                        - match: { prefix: "/" }
+                          route: { cluster: mystery-game-server }
+                http_filters:
+                  - name: envoy.filters.http.tap
+                    config:
+                      common_config:
+                        static_config:
+                          match_config:
+                            ## basic config: capture everything
+                            any_match: true
+                            ## example of more complex matching rules
+                            # and_match:
+                            #   rules:
+                            #     - http_request_headers_match:
+                            #         headers:
+                            #           - name: foo
+                            #             exact_match: bar
+                            #     - http_response_headers_match:
+                            #         headers:
+                            #           - name: bar
+                            #             exact_match: baz
+                          output_config:
+                            sinks:
+                              - file_per_tap:
+                                  path_prefix: tap_root/all_traffic/any
+                                  ## if desired, the body can be stored as a string - only recommended if you are sure the content will be a string
+                                  ## otherwise, content is base64 encoded
+                                 # format: JSON_BODY_AS_STRING
+                  - name: envoy.router
+  clusters:
+    - name: mystery-game-server
+      connect_timeout: 0.25s
+      type: static
+      lb_policy: round_robin
+      hosts: [{ socket_address: { address: 127.0.0.1, port_value: 9912 } }]

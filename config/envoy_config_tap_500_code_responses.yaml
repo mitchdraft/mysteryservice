@@ -1,0 +1,86 @@
+admin:
+  access_log_path: /tmp/admin_access.log
+  profile_path: /tmp/envoy.prof
+  address:
+    socket_address: { address: 127.0.0.1, port_value: 9999 }
+static_resources:
+  listeners:
+    - name: listener_0
+      address:
+        socket_address: { address: 0.0.0.0, port_value: 9911 }
+      filter_chains:
+        - filters:
+            - name: envoy.http_connection_manager
+              config:
+                codec_type: auto
+                stat_prefix: ingress_http
+                route_config:
+                  name: mystery-game
+                  virtual_hosts:
+                    - name: mystery-game
+                      domains: ["*"]
+                      cors:
+                        allow_origin:
+                          - "*"
+                        allow_methods: "POST"
+                        filter_enabled:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+                      routes:
+                        - match: { prefix: "/" }
+                          route:
+                            cluster: mystery-game-server
+
+## Capture all traffic that produces a 500 code response
+                http_filters:
+                  - name: envoy.filters.http.tap
+                    config:
+                      common_config:
+                        static_config:
+                          match_config:
+                            http_response_headers_match:
+                              headers:
+                                - name: ":status"
+                                  exact_match: "500"
+                          output_config:
+                            sinks:
+                              - file_per_tap:
+                                  path_prefix: tap_root/error_traffic/err
+## Capture all traffic that does NOT produce a 500 code response
+#                  - name: envoy.filters.http.tap
+#                    config:
+#                      common_config:
+#                        static_config:
+#                          match_config:
+#                            http_response_headers_match:
+#                              headers:
+#                                - name: ":status"
+#                                  exact_match: "500"
+#                                  invert_match: true
+#                          output_config:
+#                            sinks:
+#                              - file_per_tap:
+#                                  path_prefix: tap_root/error_traffic/ok
+## All traffic will be captured between the two tap specs listed above
+## If traffic matches multiple tap specs it will be captured by each
+## The spec below (commented out) will capture all traffic, including the traffic captured by the tap specs above
+#                  - name: envoy.filters.http.tap
+#                    config:
+#                      common_config:
+#                        static_config:
+#                          match_config:
+#                            any_match: true
+#                          output_config:
+#                            sinks:
+#                              - file_per_tap:
+#                                  path_prefix: tap_root/error_traffic/any
+                  - name: envoy.cors
+                    typed_config: {}
+                  - name: envoy.router
+  clusters:
+    - name: mystery-game-server
+      connect_timeout: 0.25s
+      type: static
+      lb_policy: round_robin
+      hosts: [{ socket_address: { address: 127.0.0.1, port_value: 9912 } }]

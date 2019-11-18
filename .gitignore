@@ -1,0 +1,16 @@
+
+.idea/*
+
+# temporary nginx fileserver content
+
+nginx.conf
+nginx_error.log
+nginx_access.log
+nginx_user.pid
+
+
+# tap file directories
+tap_root/*
+
+# build directory
+exec/*

@@ -1,0 +1,28 @@
+# from https://bneijt.nl/blog/post/running-nginx-for-local-development/
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+# helper so we can more easily stop the process
+pid ROOT/nginx_user.pid;
+
+http {
+    access_log  ROOT/nginx_access.log;
+    error_log   ROOT/nginx_error.log info;
+
+    server {
+        listen 19123;
+        server_name  localhost;
+
+        charset utf-8;
+
+        location / {
+            root   ROOT/build;
+            autoindex on;
+            index  index.html index.htm;
+            include   ROOT/mime.types;
+        }
+    }
+}

@@ -1,0 +1,34 @@
+# from https://bneijt.nl/blog/post/running-nginx-for-local-development/
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+# helper so we can more easily stop the process
+pid ROOT/nginx_user.pid;
+
+http {
+    access_log  ROOT/nginx_access.log;
+    error_log   ROOT/nginx_error.log info;
+
+    # prevent browser from trying to download the json file, tell it to render it as text
+    types {}
+    default_type  text/html;
+    add_header Content-Type text/html;
+
+    sendfile        on;
+    
+    server {
+        listen       8060;
+        server_name  localhost;
+
+        charset utf-8;
+
+        location / {
+            root   ROOT;
+            autoindex on;
+            index  index.html index.htm;
+        }
+    }
+}

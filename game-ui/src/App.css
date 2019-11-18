@@ -1,0 +1,137 @@
+.App {
+  text-align: center;
+  background-color: #282c34;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(4px + 2vmin);
+  color: white;
+  height: 100vh;
+  /* height: 100%; */
+  overflow: scroll;
+}
+
+.psvgName {
+  font: bold 30px sans-serif;
+}
+
+.psvgRoot:hover {
+  stroke-dasharray: 4 1;
+}
+
+.hotkey-input:focus {
+  background: black;
+}
+.hotkey-input {
+  color: blue;
+  background: black;
+  border: none;
+  width: 20px;
+  font-size: 10px;
+  height: 10px;
+}
+
+.palette {
+  position: absolute;
+}
+
+.button2 {
+  background: green;
+  color: white;
+}
+.button2:hover {
+  background: white;
+  color: black;
+}
+
+.svgCell:hover {
+  stroke-dasharray: 4 1;
+  fill: white;
+}
+.cmdDisplayGrid {
+  font-size: 10px;
+}
+
+.room {
+  /* height: 60px; */
+  outline: solid black;
+  justify-content: center;
+}
+.roomActive {
+  background: red;
+}
+.roomInactive {
+  background: olive;
+}
+.roomNonexistent {
+  background: black;
+}
+/* Folder properties */
+.detectiveFolder {
+}
+.tabContent {
+  height: 30vh;
+  overflow: scroll;
+  text-align: left;
+  padding: 1em;
+  color: black;
+  background: tan;
+  box-shadow: inset -1px -1px 0 brown, inset 1px 0 0 brown;
+}
+
+.tabHeader {
+  background: hsla(34, 44%, 50%, 1);
+  color: black;
+  font-style: italic;
+  border-radius: 30% 30% 0 0;
+  box-shadow: inset -1px 1px 0 brown, inset 1px 0 0 brown;
+}
+.tabHeaderActive {
+  background: tan;
+  color: black;
+}
+
+/* folder rows */
+.folderRow {
+}
+.folderRowActive {
+  background: grey;
+}
+
+/* position controller */
+
+.controllerTextButton {
+  background: black;
+  border-radius: 20px;
+  padding: 10% 0;
+}
+.controllerInputField {
+  width: 50px;
+  color: black;
+  background: grey;
+  outline: none;
+  border-radius: 20px;
+}
+
+/* suspect guest */
+.suspectDiv {
+  border-radius: 20px;
+  box-shadow: inset -2px -2px 1px black;
+  color: black;
+  /* border: solid 1px black; */
+}
+
+/* suspected object */
+.activeItem {
+  border-radius: 20px;
+  box-shadow: inset -2px -2px 1px black;
+  background: black;
+  color: white;
+  /* border: solid 1px black; */
+}
+.inactiveItem {
+  border-radius: 20px;
+  box-shadow: inset -1px -1px 1px black, inset 1px 1px 1px black;
+  color: black;
+  white: white;
+  /* border: solid 1px black; */
+}

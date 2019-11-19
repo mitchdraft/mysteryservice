@@ -1,7 +1,7 @@
 
 TAP_ROOT=tap_root
 GAME_SERVICE_DIR=service/mystery/cmd
-VERSION=0.0.1
+VERSION ?= 0.0.5
 
 ### Initialization
 
@@ -63,8 +63,8 @@ guess-correctly:
 build-mystery-game-server:
 	CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -o exec/mystery-game-linux-amd64 $(GAME_SERVICE_DIR)/main.go
 
-.PHONY: docker-push
-docker-push:
+.PHONY: docker-push-server
+docker-push-server: build-mystery-game-server
 	docker build -t mitchdraft/mystery-game:$(VERSION) -f $(GAME_SERVICE_DIR)/Dockerfile .
 	docker push mitchdraft/mystery-game:$(VERSION)
 
@@ -73,3 +73,12 @@ docker-push-envoy:
 	docker build -t mitchdraft/mystery-tap-err:$(VERSION) -f config/Dockerfile .
 	# docker push mitchdraft/mystery-game:$(VERSION)
 
+
+.PHONY: docker-push-ui
+docker-push-ui:
+	yarn --cwd=./game-ui build
+	docker build -t mitchdraft/mystery-service-ui:$(VERSION) -f game-ui/Dockerfile game-ui
+	docker push mitchdraft/mystery-service-ui:$(VERSION)
+
+.PHONY: docker-push-game
+docker-push-game: docker-push-ui docker-push-server

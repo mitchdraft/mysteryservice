@@ -53,6 +53,8 @@
 
 .room {
   /* height: 60px; */
+  /* height: 5em; */
+  overflow: scroll;
   outline: solid black;
   justify-content: center;
 }
@@ -121,6 +123,9 @@
 }
 
 /* suspected object */
+.itemDiv {
+  font-size: small;
+}
 .activeItem {
   border-radius: 20px;
   box-shadow: inset -2px -2px 1px black;
@@ -148,4 +153,13 @@
   text-align: left;
   height: 80%;
   width: 80%;
+}
+
+/* about */
+.aboutBlock {
+  background: rgba(89, 18, 89, 0.858);
+  border-radius: 1em;
+}
+.aboutBlock > a {
+  color: white;
 }

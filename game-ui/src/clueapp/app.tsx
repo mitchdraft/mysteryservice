@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { AppState } from "store";
 import { useSelector, useDispatch } from "react-redux";
 import { PositionController } from "clueapp/PositionController";
+import { About } from "clueapp/about";
 import { appConfig } from "clueapp/config";
 import {
   setResponseMessage,
@@ -40,7 +41,7 @@ export const ClueApp = (props: ClueAppProps) => {
     tabs: [
       {
         list: [],
-        name: "Guess",
+        name: "Notes",
         alternateComponent: <FrontPageTab />
       },
       {
@@ -73,18 +74,28 @@ export const ClueApp = (props: ClueAppProps) => {
 
   return (
     <MainLayout>
-      <LhsLayout>
-        <Folder {...FolderData} />
-        <SingleLogDisplay />
-        <PositionController floorPlan={fp} />
-      </LhsLayout>
-      <RenderFloorPlan floorPlan={fp} />
-      <RiskyStuff />
+      <Body>
+        <LhsLayout>
+          <Folder {...FolderData} />
+          <PositionController floorPlan={fp} />
+        </LhsLayout>
+        <RhsLayout>
+          <FloorPlanSection>
+            <RenderFloorPlan floorPlan={fp} />
+          </FloorPlanSection>
+          <SingleLogDisplay />
+        </RhsLayout>
+      </Body>
+      <div>
+        <RiskyStuff />
+        <About />
+      </div>
     </MainLayout>
   );
 };
 
-const MainLayout = styled.div`
+const MainLayout = styled.div``;
+const Body = styled.div`
   display: grid;
   grid-gap: 1em;
   padding: 1em;
@@ -95,8 +106,15 @@ const LhsLayout = styled.div`
   display: grid;
   grid-gap: 1em;
   padding: 1em;
-  grid-template-rows: 6fr 1fr 6fr;
+  grid-template-rows: 6fr 6fr;
   height: 60vh;
+`;
+const RhsLayout = styled.div`
+  height: 80vh;
+`;
+const FloorPlanSection = styled.div`
+  overflow: scroll;
+  height: 70vh;
 `;
 const PositionControllerBoundary = styled.div`
   display: grid;
@@ -174,7 +192,6 @@ const newFloorPlan = (
 const FloorGrid =
   //todo - make parametric
   styled.div`
-    height: 80vh;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
@@ -224,7 +241,7 @@ const RoomDiv2 = (props: RoomDiv2Props) => {
         {props.roomId && props.isActiveRoom ? (
           <>
             <Suspect name={guess.guest} />
-            <div className="activeItem">{guess.object}</div>
+            <div className="itemDiv activeItem">{guess.object}</div>
           </>
         ) : (
           <>
@@ -232,7 +249,11 @@ const RoomDiv2 = (props: RoomDiv2Props) => {
             <div />
           </>
         )}
-        <div className="inactiveItem">{getItemsDisplay(props.roomData)}</div>
+        {getItemsDisplay(props.roomData) ? (
+          <div className="itemDiv inactiveItem">
+            {getItemsDisplay(props.roomData)}
+          </div>
+        ) : null}
       </RoomSplit>
     </div>
   );

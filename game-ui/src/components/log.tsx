@@ -19,7 +19,7 @@ export type SingleLogDisplayProps = {};
 export const SingleLogDisplay = (props: SingleLogDisplayProps) => {
   const logs = useSelector((state: AppState) => state.logs.logs);
   const initialLog = {
-    message: "no logs",
+    message: "Welcome to the Mystery Service",
     type: LogLevel.info
   };
   const log = logs.length > 0 ? logs[logs.length - 1] : initialLog;

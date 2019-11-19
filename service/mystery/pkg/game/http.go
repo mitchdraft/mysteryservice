@@ -214,7 +214,7 @@ func (s *state) judgeGuess(w http.ResponseWriter, guess *GuessPayload) {
 		}
 		return
 	}
-	keepGuessing := &Judgement{Msg: fmt.Sprintf("keep guessing, it's not %v", guess.Guest)}
+	keepGuessing := &Judgement{Msg: fmt.Sprintf("keep guessing, it's not %v with the %v in the %v", guess.Guest, guess.Object, guess.Room)}
 	if err := je.Encode(keepGuessing); err != nil {
 		s.logger.Errorw("unable to encode judgement", zap.Error(err))
 	}

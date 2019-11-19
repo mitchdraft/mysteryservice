@@ -34,8 +34,10 @@ const baseRoomSuspects = [
   "garden"
 ];
 const baseObjectSuspects = [
+  "human error",
   "service mesh",
-  "gateway",
+  "stale code",
+  "version delta",
   "container repo",
   "server fire"
 ];
